@@ -72,8 +72,8 @@ resource "aws_instance" "pub_instance" {
   }
 
   provisioner "file" {
-    source      = "${path.root}/${var.bash_dir}/check_nginx.sh"
-    destination = "/home/ubuntu/check_nginx.sh"
+    source      = "${path.root}/${var.bash_dir}/check_services.sh"
+    destination = "/home/ubuntu/check_services.sh"
 
     connection {
       host        = self.public_ip
@@ -86,9 +86,9 @@ resource "aws_instance" "pub_instance" {
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x check_nginx.sh",
-      "./check_nginx.sh ${self.public_ip}",
-      "rm check_nginx.sh",
+      "chmod +x check_services.sh",
+      "./check_services.sh ${self.public_ip}",
+      "rm check_services.sh",
       "ls -al /home"
     ]
 
