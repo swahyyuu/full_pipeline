@@ -71,10 +71,6 @@ resource "aws_instance" "pub_instance" {
     Name = "terraform instance"
   }
 
-  timeouts {
-    create = "10m"
-  }
-
   provisioner "file" {
     source      = "${path.root}/${var.bash_dir}/check_services.sh"
     destination = "/home/ubuntu/check_services.sh"
@@ -91,9 +87,8 @@ resource "aws_instance" "pub_instance" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x check_services.sh",
-      "./check_services.sh ${self.public_ip}",
-      "rm check_services.sh",
-      "ls -al /home"
+      "./check_services.sh",
+      "rm check_services.sh"
     ]
 
     connection {
