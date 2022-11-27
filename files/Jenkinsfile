@@ -164,7 +164,11 @@ pipeline {
               if(apply) {
                 dir('files/') {
                   unstash "terraform-plan"
-                  sh 'terraform apply terraform.tfplan'
+                  try {
+                      sh 'terraform apply terraform.tfplan'
+                  } catch (err) {
+                      sh "terraform destroy -auto-approve -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY'"
+                  }
                 }
               }
             }
@@ -180,7 +184,7 @@ pipeline {
         }
         stage('Remove AMI Resource') {
           steps {
-            dir('files/python') {
+            dir('files/python/') {
               withPythonEnv('/usr/bin/python3') {
                 withAWS(credentials:'AwsAccount') {
                   sh """
