@@ -194,6 +194,7 @@ pipeline {
                   sh """
                   chmod +x ./check_library.sh
                   ./check_library.sh
+                  python3 clean_resources.py
                   """
                 }
               }
