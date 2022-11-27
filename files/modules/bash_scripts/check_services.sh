@@ -15,7 +15,7 @@ function check_apache() {
   fi
 }
 sudo ufw enable
-sudo ufw allow 22
+sudo ufw allow 22/tcp
 
 sudo sed -i 's/80/2000/' /etc/apache2/sites-available/000-default.conf
 sudo ufw allow 2000
