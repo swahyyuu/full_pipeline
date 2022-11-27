@@ -9,6 +9,4 @@ function library_install() {
 }
 
 library_install
-python3 ./clean_ami.py 
-wait 
-python3 ./clean_snapshot.py
+python3 --version
