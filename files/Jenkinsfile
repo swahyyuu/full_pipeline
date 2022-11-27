@@ -165,9 +165,11 @@ pipeline {
                 dir('files/') {
                   unstash "terraform-plan"
                   try {
-                      sh 'terraform apply terraform.tfplan'
+                    sh 'terraform apply terraform.tfplan'
                   } catch (err) {
-                      sh "terraform destroy -auto-approve -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY'"
+                    sh "terraform destroy -auto-approve \
+                    -var 'access_key=$ACCESS_KEY' \
+                    -var 'secret_key=$SECRET_KEY'"
                   }
                 }
               }
@@ -178,7 +180,9 @@ pipeline {
         stage('TerraformDestroy') {
           steps {
             dir('files/') {
-              sh "terraform destroy -auto-approve -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY'"
+              sh "terraform destroy -auto-approve \
+              -var 'access_key=$ACCESS_KEY' \
+              -var 'secret_key=$SECRET_KEY'"
             }
           }
         }
