@@ -14,15 +14,20 @@ function check_apache() {
     sudo systemctl start apache2
   fi
 }
+sudo ufw enable 
 
-sudo sed -i 's/80/2000/' /etc/apache2/sites-available/000-default.conf 
+sudo sed -i 's/80/2000/' /etc/apache2/sites-available/000-default.conf
+sudo ufw allow 2000
 sudo systemctl disable apache2
 sudo ufw allow 'Apache'
 sudo systemctl enable apache2
 check_apache
 
+sudo systemctl stop nginx
 sudo ufw allow 'Nginx HTTP'
 check_nginx
 
 curl localhost
 curl localhost:2000
+
+cat /etc/apache2/sites-available/000-default.conf

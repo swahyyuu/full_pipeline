@@ -178,6 +178,20 @@ pipeline {
             }
           }
         }
+        stage('Remove AMI Resource') {
+          steps {
+            dir('files/python') {
+              withPythonEnv('/usr/bin/python3') {
+                withAWS(credentials:'AwsAccount') {
+                  sh """
+                  chmod +x ./check_library.sh
+                  ./check_library.sh
+                  """
+                }
+              }
+            }
+          }
+        }
       }
     }
 
