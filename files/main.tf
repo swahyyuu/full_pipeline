@@ -9,10 +9,6 @@ module "aws_terra_instance" {
   vpc_id     = module.aws_terra_vpc.vpc_id
   subnet_id  = module.aws_terra_vpc.subnet_id
   account_id = data.aws_caller_identity.current.account_id
-  
-  timeouts {
-    create = "10m"
-  }
 }
 
 module "aws_terra_iam" {

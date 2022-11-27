@@ -15,13 +15,17 @@ function check_apache() {
   fi
 }
 
+echo "Setting up inside the server..."
 sudo sed -i 's/80/2000/' /etc/apache2/sites-available/000-default.conf
 sudo ufw allow 2000
+
+echo "Apache being set up..."
 sudo systemctl disable apache2
 sudo ufw allow 'Apache'
 sudo systemctl enable apache2
 check_apache
 
+echo "Nginx being set up..."
 sudo systemctl stop nginx
 sudo ufw allow 'Nginx HTTP'
 check_nginx

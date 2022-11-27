@@ -71,6 +71,10 @@ resource "aws_instance" "pub_instance" {
     Name = "terraform instance"
   }
 
+  timeouts {
+    create = "10m"
+  }
+
   provisioner "file" {
     source      = "${path.root}/${var.bash_dir}/check_services.sh"
     destination = "/home/ubuntu/check_services.sh"
