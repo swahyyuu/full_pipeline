@@ -165,8 +165,8 @@ pipeline {
                 dir('files/') {
                   unstash "terraform-plan"
                   try {
-                    sh 'terraform import aws_kms_alias.kms_alias alias/my-terra-kms'
                     sh 'terraform apply terraform.tfplan'
+                    sh 'terraform import aws_kms_alias.kms_alias alias/my-terra-kms'
                   } catch (err) {
                     sh "terraform destroy -auto-approve \
                     -var 'access_key=$ACCESS_KEY' \
@@ -205,8 +205,11 @@ pipeline {
         stage('Test AWS Environment') {
           steps {
             withAWS(credentials:'AwsAccount') {
-              sh "export AWS_DEFAULT_REGION=ap-southeast-1"
-              sh "aws kms list-aliases"
+              sh """
+              export AWS_DEFAULT_REGION=ap-southeast-1
+              aws configure set region "ap-southeast-1"
+              aws kms list-aliases
+              """
             }
           }
         }
