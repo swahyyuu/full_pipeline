@@ -4,8 +4,8 @@ function check_kms(kms_name) {
   if [[ $? -gt 0 ]]; then 
     continue
   else
-    sudo sed -i '7s/resource/data' ./modules/aws_kms/main.tf
-    sudo sed -i '3s/aws_kms_alias/data.aws_kms_alias' ./modules/aws_kms/outputs.tf
+    sudo sed -i '7s/resource/data' terraform-plan
+    sudo sed -i '3s/aws_kms_alias/data.aws_kms_alias' terraform-plan
   fi
 }
 
