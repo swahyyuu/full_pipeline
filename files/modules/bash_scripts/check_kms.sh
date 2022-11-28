@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 function check_kms() {
   aws kms list-aliases --query 'Aliases[]/AliasName' | grep my-terra-kms
@@ -8,4 +8,4 @@ function check_kms() {
   fi
 }
 
-check_kms()
+check_kms
