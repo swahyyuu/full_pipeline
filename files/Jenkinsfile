@@ -212,17 +212,6 @@ pipeline {
             }
           }
         }
-        stage('Test AWS Environment') {
-          steps {
-            withAWS(credentials:'AwsAccount') {
-              sh """
-              export AWS_DEFAULT_REGION=ap-southeast-1
-              aws configure set region "ap-southeast-1"
-              aws kms list-aliases
-              """
-            }
-          }
-        }
       }
     }
 
