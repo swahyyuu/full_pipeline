@@ -108,6 +108,17 @@ pipeline {
             dir('files/') {
               script {
                 modules.slack.envProdStart(currentBuild.result)
+                try {
+                withAWS(credentials:'AwsAccount') {
+                  sh """
+                    aws configure set region "ap-southeast-1"
+                    chmod +x ./modules/bash_scripts/check_kms.sh
+                    ./modules/bash_scripts/check_kms.sh
+                  """
+                } 
+                } catch(err) {
+                  sh "echo something_error"
+                }
               }
               sh """
               terraform init -upgrade -input=false
@@ -140,14 +151,7 @@ pipeline {
                   sh "terraform workspace new ${params.WORKSPACE}"
                 } catch (err) {
                   sh "terraform workspace select ${params.WORKSPACE}"
-                }
-                withAWS(credentials:'AwsAccount') {
-                  sh """
-                    aws configure set region "ap-southeast-1"
-                    chmod +x ./modules/bash_scripts/check_kms.sh
-                    ./modules/bash_scripts/check_kms.sh
-                  """
-                }                
+                }               
                 sh "terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
                 -out terraform.tfplan;echo \$? > status"
                 stash name: "terraform-plan", includes: "terraform.tfplan"
