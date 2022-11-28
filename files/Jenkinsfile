@@ -144,7 +144,7 @@ pipeline {
                 withAWS(credentials:'AwsAccount') {
                   sh """
                     chmod +x ./modules/bash_scripts/check_kms.sh
-                    ./modules/bash_scripts/check_kms.sh my-terra-bucket
+                    ./modules/bash_scripts/check_kms.sh
                   """
                 }                
                 sh "terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
