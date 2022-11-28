@@ -10,7 +10,7 @@ output "kms_key_arn" {
 
 output "kms_key_alias_name" {
   description = "Alias name of the key"
-  value       = aws_kms_alias.kms_alias.name
+  value       = data.aws_kms_alias.kms_alias.name
 }
 
 output "aws_kms_key" {

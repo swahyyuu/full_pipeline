@@ -6,5 +6,4 @@ resource "aws_kms_key" "key_bucket" {
 
 data "aws_kms_alias" "kms_alias" {
   name          = "alias/${lower(var.kms_key_alias)}"
-  target_key_id = aws_kms_key.key_bucket.key_id
 }
