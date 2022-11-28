@@ -165,8 +165,13 @@ pipeline {
                 dir('files/') {
                   unstash "terraform-plan"
                   try {
+                    withAWS(credentials:'AwsAccount') {
+                      sh """
+                        chmod +x ./modules/bash_scripts/check_kms.sh
+                        ./modules/bash_scripts/check_kms.sh my-terra-bucket
+                      """
+                    }
                     sh 'terraform apply terraform.tfplan'
-                    sh 'terraform import aws_kms_alias.kms_alias alias/my-terra-kms'
                   } catch (err) {
                     sh "terraform destroy -auto-approve \
                     -var 'access_key=$ACCESS_KEY' \
