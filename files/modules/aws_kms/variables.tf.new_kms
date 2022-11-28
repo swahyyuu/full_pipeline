@@ -1,7 +1,7 @@
 variable "kms_key_alias" {
   type        = string
   description = "An alias for kms key"
-  default     = "my-terra-kms"
+  default     = "new-terra-kms"
 }
 
 variable "kms_deletion_window_days" {
