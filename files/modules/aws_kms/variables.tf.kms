@@ -1,0 +1,19 @@
+variable "kms_key_alias" {
+  type        = string
+  description = "An alias for kms key"
+  default     = "remove-delayed"
+}
+
+variable "kms_deletion_window_days" {
+  type        = number
+  description = "Days count for deletion policy of key"
+  default     = 7
+}
+
+variable "tags" {
+  type = map(string)
+  default = {
+    "Purpose"    = "Terra-demo",
+    "CostCenter" = "infra"
+  }
+}
