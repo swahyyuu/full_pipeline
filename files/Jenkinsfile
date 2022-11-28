@@ -165,6 +165,7 @@ pipeline {
                 dir('files/') {
                   unstash "terraform-plan"
                   try {
+                    sh 'terraform import aws_kms_alis.kms_alis alias/my-terra-kms'
                     sh 'terraform apply terraform.tfplan'
                   } catch (err) {
                     sh "terraform destroy -auto-approve \
@@ -198,6 +199,13 @@ pipeline {
                   """
                 }
               }
+            }
+          }
+        }
+        stage('Test AWS Environment') {
+          steps {
+            withAWS(credentials:'AwsAccount') {
+              sh "aws kms list-aliases"
             }
           }
         }
