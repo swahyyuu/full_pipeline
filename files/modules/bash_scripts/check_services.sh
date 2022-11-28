@@ -15,6 +15,8 @@ function check_apache() {
   fi
 }
 
+echo "Nginx being set up..."
+sudo systemctl stop nginx
 echo "Apache being set up..."
 sudo systemctl disable apache2
 
@@ -27,8 +29,8 @@ sudo ufw allow 'Apache'
 sudo systemctl enable apache2
 check_apache
 
-echo "Nginx being set up..."
-sudo systemctl stop nginx
+
+echo "Allow Nginx..."
 sudo ufw allow 'Nginx HTTP'
 check_nginx
 
@@ -39,3 +41,4 @@ echo "curl apache server..."
 curl localhost:2000
 
 cat /etc/apache2/sites-available/000-default.conf
+ss -tulpn
