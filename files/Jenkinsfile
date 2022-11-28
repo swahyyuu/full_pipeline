@@ -141,6 +141,12 @@ pipeline {
                 } catch (err) {
                   sh "terraform workspace select ${params.WORKSPACE}"
                 }
+                withAWS(credentials:'AwsAccount') {
+                  sh """
+                    chmod +x ./modules/bash_scripts/check_kms.sh
+                    ./modules/bash_scripts/check_kms.sh my-terra-bucket
+                  """
+                }                
                 sh "terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
                 -out terraform.tfplan;echo \$? > status"
                 stash name: "terraform-plan", includes: "terraform.tfplan"
@@ -165,12 +171,6 @@ pipeline {
                 dir('files/') {
                   unstash "terraform-plan"
                   try {
-                    withAWS(credentials:'AwsAccount') {
-                      sh """
-                        chmod +x ./modules/bash_scripts/check_kms.sh
-                        ./modules/bash_scripts/check_kms.sh my-terra-bucket
-                      """
-                    }
                     sh 'terraform apply terraform.tfplan'
                   } catch (err) {
                     sh "terraform destroy -auto-approve \
