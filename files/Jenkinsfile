@@ -111,6 +111,7 @@ pipeline {
                 try {
                 withAWS(credentials:'AwsAccount') {
                   sh """
+                    chmod 666 modules/aws_kms/variables.tf
                     aws configure set region "ap-southeast-1"
                     chmod +x ./modules/bash_scripts/check_kms.sh
                     ./modules/bash_scripts/check_kms.sh
