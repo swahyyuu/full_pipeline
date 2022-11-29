@@ -16,7 +16,7 @@ function check_apache() {
 }
 
 echo "Configuring server firewall"
-sudo iptables
+sudo iptables -L --line-numbers
 
 echo "Nginx shutting down..."
 sudo systemctl stop nginx
@@ -45,5 +45,5 @@ echo "nginx file configuration..."
 cat /etc/nginx/nginx.conf
 
 ss -tulpn
-sudo ufw status
 ls -al /home
+ls -al /etc/nginx/
