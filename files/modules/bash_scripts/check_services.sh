@@ -38,13 +38,3 @@ curl localhost:8080
 
 echo "curl apache server..."
 curl localhost:80
-
-echo "apache file configuration..."
-cat /etc/apache2/sites-available/000-default.conf
-
-ss -tulpn
-ls -al /home
-ls -al /etc/nginx/
-
-echo "nginx file configuration..."
-cat /etc/nginx/sites-available/default
