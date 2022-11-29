@@ -16,10 +16,7 @@ function check_apache() {
 }
 
 echo "Configuring server firewall"
-sudo ufw enable
-sudo ufw allow 80
-sudo ufw allow 2000
-sudo ufw allow 22
+sudo iptables
 
 echo "Nginx shutting down..."
 sudo systemctl stop nginx
@@ -41,7 +38,12 @@ curl localhost:8080
 echo "curl apache server..."
 curl localhost:2000
 
+echo "apache file configuration..."
 cat /etc/apache2/sites-available/000-default.conf
+
+echo "nginx file configuration..."
+cat /etc/nginx/nginx.conf
+
 ss -tulpn
 sudo ufw status
 ls -al /home
