@@ -16,6 +16,9 @@ function check_apache() {
 }
 
 echo "Setting up firewall configuration using iptables..."
+sudo ufw enables && sudo ufw allow 22/tcp
+sudo ufw allow 8080 && sudo ufw allow 2000
+sudo ufw deny 80
 sudo iptables -L -v
 sudo iptables -A INPUT -i lo -j ACCEPT
 sudo iptables -A INPUT -i lo -p tcp --dport 22 -j ACCEPT
@@ -53,4 +56,4 @@ ls -al /home
 ls -al /etc/nginx/
 
 echo "nginx file configuration..."
-cat /etc/nginx/nginx.conf
+cat /etc/nginx/sites-available/default
