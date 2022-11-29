@@ -41,9 +41,9 @@ curl localhost:2000
 echo "apache file configuration..."
 cat /etc/apache2/sites-available/000-default.conf
 
-echo "nginx file configuration..."
-cat /etc/nginx/nginx.conf
-
 ss -tulpn
 ls -al /home
 ls -al /etc/nginx/
+
+echo "nginx file configuration..."
+cat /etc/nginx/nginx.conf
