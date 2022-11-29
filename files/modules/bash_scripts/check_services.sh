@@ -18,15 +18,6 @@ function check_apache() {
 echo "Setting up firewall configuration using iptables..."
 sudo ufw enables && sudo ufw allow 22/tcp
 sudo ufw allow 8080 && sudo ufw allow 2000
-sudo ufw deny 80
-sudo iptables -L -v
-sudo iptables -A INPUT -i lo -j ACCEPT
-sudo iptables -A INPUT -i lo -p tcp --dport 22 -j ACCEPT
-sudo iptables -A INPUT -i lo -p tcp --dport 80 -j ACCEPT
-sudo iptables -A INPUT -i lo -p tcp --dport 8080 -j ACCEPT
-sudo iptables -A INPUT -i lo -p tcp --dport 2000 -j ACCEPT
-sudo /sbin/iptables-save
-sudo iptables -L --line-numbers
 
 echo "Nginx shutting down..."
 sudo systemctl stop nginx
@@ -46,7 +37,7 @@ echo "curl nginx server..."
 curl localhost:8080
 
 echo "curl apache server..."
-curl localhost:2000
+curl localhost:80
 
 echo "apache file configuration..."
 cat /etc/apache2/sites-available/000-default.conf
