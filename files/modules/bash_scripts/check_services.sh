@@ -42,3 +42,4 @@ curl localhost:2000
 
 cat /etc/apache2/sites-available/000-default.conf
 ss -tulpn
+ls -al /home
