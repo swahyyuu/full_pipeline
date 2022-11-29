@@ -10,7 +10,7 @@ sudo mkdir /home/wahyu
 sudo mkdir /var/www/nginx
 
 
-cat <<EOF >> /etc/nginx/sites-available/example
+sudo cat <<EOF >> /etc/nginx/sites-available/example
 server{
 listen 80;
 root /var/www/nginx;
@@ -48,11 +48,11 @@ sudo mkdir /var/www/apache
 sudo cp /var/www/html/index.html /var/www/apache/
 
 echo "Configuring Apache port..."
-sudo sed -i 's/*:80/localhost:8080/' /etc/apache2/ports.conf
-sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/site-available/example.conf
+sudo sed -i 's+*:80+localhost:8080+' /etc/apache2/ports.conf
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/example.conf
 sed 's+Document.*+Document /var/www/apache+' /etc/apache2/sites-available/example.conf
 
 echo "Check file for apache configuration..."
 cat /etc/apache2/ports.conf
-cat /etc/apache2/site-available/example.conf
+cat /etc/apache2/sites-available/example.conf
 ls -al /var/www
