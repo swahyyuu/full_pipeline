@@ -4,6 +4,7 @@ echo "Welcome to Packer"
 echo "Installing nginx..."
 sudo apt-get update 
 sudo apt-get install nginx -y
+wait
 
 echo "Create nginx folder"
 sudo mkdir /home/wahyu
@@ -25,8 +26,9 @@ cat /etc/nginx/sites-available/example
 
 echo "Installing apache..."
 sudo apt-get install apache2 apache2-bin apache2-utils mime-support ssl-cert -y
-
+wait
 sudo apt-get -f install
+wait
 
 echo "Create apache folder"
 sudo mkdir /var/www/apache
@@ -40,4 +42,9 @@ sudo sed 's+Document.*+Document /var/www/apache+' /etc/apache2/sites-available/e
 echo "Check file for apache configuration..."
 cat /etc/apache2/ports.conf
 cat /etc/apache2/sites-available/example.conf
+
+echo "check folder..."
 ls -al /var/www
+ls -al /etc/apache2/
+echo "Check detail folder..."
+ls -al /etc/apache2/sites-available/
