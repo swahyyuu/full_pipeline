@@ -18,10 +18,10 @@ function check_apache() {
 echo "Setting up firewall configuration using iptables..."
 sudo iptables -L -v
 sudo iptables -A INPUT -i lo -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
-sudo iptables -A INPUT -p tcp --dport 2000 -j ACCEPT
+sudo iptables -A INPUT -i lo -p tcp --dport 22 -j ACCEPT
+sudo iptables -A INPUT -i lo -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -i lo -p tcp --dport 8080 -j ACCEPT
+sudo iptables -A INPUT -i lo -p tcp --dport 2000 -j ACCEPT
 sudo /sbin/iptables-save
 sudo iptables -L --line-numbers
 
