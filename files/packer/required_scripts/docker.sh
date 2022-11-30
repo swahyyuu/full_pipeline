@@ -28,4 +28,4 @@ sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 wait
 
-sudo docker hello-world
+sudo docker run hello-world
