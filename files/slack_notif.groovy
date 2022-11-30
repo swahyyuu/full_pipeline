@@ -83,6 +83,22 @@ def envProdStart (String buildStatus) {
    slackSend (color: colorCode, channel: params.SLACK, message: summary)
 }
 
+def packerBuild (String buildStatus = 'STARTED') {
+   buildStatus = buildStatus
+
+   def dateTime = dateFormatted()
+   def colorCode = '#FF0000'
+   def summary = "Packer AMI Run = ${buildStatus} : Job Name '${env.JOB_NAME} | Build Number [${env.BUILD_NUMBER}] | URL : ${env.BUILD_URL} | Time : ${dateTime}'"
+
+   if (buildStatus == 'STARTED') {
+      colorCode = '#FFFF00'
+   } else {
+      colorCode = '#FFA500'
+   }
+
+   slackSend (color: colorCode, channel: params.SLACK, message: summary)
+}
+
 def dateFormatted () {
   dateFormat = new SimpleDateFormat("yyyy-MM-dd'|'HH:mm:ss")
   date = new Date()

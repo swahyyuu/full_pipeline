@@ -98,6 +98,10 @@ pipeline {
             stage('Preparing AMI Packer') {
               steps {
                 dir('files/packer/') {
+                  script {
+                    modules.slack = load "slack_notif.groovy"
+                    modules.slack.packerBuild()                    
+                  }
                   sh """
                     packer build \
                     -var "aws_access_key=$ACCESS_KEY" \
