@@ -93,7 +93,8 @@ resource "aws_instance" "pub_instance" {
       "chmod +x check_services.sh",
       "./check_services.sh",
       "rm check_services.sh",
-      "sudo usermod -aG docker $USER"
+      "sudo usermod -aG docker $USER",
+      "df -h"
     ]
 
     connection {
