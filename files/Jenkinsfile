@@ -88,7 +88,7 @@ pipeline {
                     dir('files/') {
                       sh "sleep 5"
                       sh "echo curling the web server"
-                      sh "curl localhost"
+                      sh "curl localhost:5002"
                       sh "docker rm -f flask_from_jenkins"
                     }
                   }
@@ -99,7 +99,7 @@ pipeline {
               steps {
                 dir('files/packer/') {
                   script {
-                    modules.slack = load "slack_notif.groovy"
+                    modules.slack = load "../slack_notif.groovy"
                     modules.slack.packerBuild()                    
                   }
                   sh """
