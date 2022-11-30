@@ -25,7 +25,7 @@ cat /etc/nginx/sites-available/example
 
 
 echo "Installing apache..."
-sudo apt-get install apache2 apache2-bin apache2-utils mime-support ssl-cert -y
+sudo apt-get install apache2 -y
 wait
 sudo apt-get -f install
 wait
@@ -38,6 +38,7 @@ echo "Configuring Apache port..."
 sudo sed -i 's+*:80+localhost:8080+' /etc/apache2/ports.conf
 sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/example.conf
 sudo sed 's+Document.*+Document /var/www/apache+' /etc/apache2/sites-available/example.conf
+wait
 
 echo "Check file for apache configuration..."
 cat /etc/apache2/ports.conf
