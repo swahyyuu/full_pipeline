@@ -22,7 +22,7 @@ variable "any_port" {
 variable "ingress_ports" {
   type        = list(number)
   description = "list of ingress ports for security group of instance"
-  default     = [22, 80, 8080]
+  default     = [22, 80, 5000,8080]
 }
 
 variable "instance_type" {

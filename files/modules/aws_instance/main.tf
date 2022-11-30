@@ -127,9 +127,8 @@ resource "aws_instance" "pub_instance" {
 
   provisioner "remote-exec" {
     inline = [
-      "docker run -d -p 5002:80 --name flask_from_jenkins ${var.dockerhub_user}/jenkins:3.1",
-      "docker container ls",
-      "curl localhost:5002"
+      "docker run -d -p 5000:80 --name flask_from_jenkins ${var.dockerhub_user}/jenkins:3.1",
+      "docker container ls"
     ]
 
     connection {
