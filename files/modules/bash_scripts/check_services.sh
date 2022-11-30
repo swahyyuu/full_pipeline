@@ -33,8 +33,8 @@ check_apache
 echo "Allow Nginx..."
 check_nginx
 
-echo "curl nginx server..."
+echo "curl apache server..."
 curl localhost:8080
 
-echo "curl apache server..."
+echo "curl nginx server..."
 curl localhost:80

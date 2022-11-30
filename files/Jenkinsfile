@@ -211,7 +211,7 @@ pipeline {
             }
           }
         }
-        stage('Remove AMI Resource') {
+        stage('Remove AMI and Volume Resource') {
           steps {
             dir('files/python/') {
               withPythonEnv('/usr/bin/python3') {
