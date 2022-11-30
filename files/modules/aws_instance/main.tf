@@ -92,7 +92,8 @@ resource "aws_instance" "pub_instance" {
     inline = [
       "chmod +x check_services.sh",
       "./check_services.sh",
-      "rm check_services.sh"
+      "rm check_services.sh",
+      "sudo usermod -aG docker $USER"
     ]
 
     connection {
@@ -101,6 +102,25 @@ resource "aws_instance" "pub_instance" {
       user        = "ubuntu"
       private_key = file("${var.key_name}.pem")
       timeout     = "5m"
+    }
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "groups $USER",
+      "docker version",
+      "docker search ubuntu",
+      "docker run hello world",
+      "docker image ls",
+      "docker container ls -a"
+    ]
+
+    connection {
+      host        = self.public_ip
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${var.key_name}.pem")
+      timeout     = "10m"
     }
   }
 }

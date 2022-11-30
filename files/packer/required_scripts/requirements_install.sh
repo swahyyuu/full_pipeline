@@ -35,7 +35,7 @@ sudo mkdir /var/www/apache
 sudo cp /var/www/html/index.html /var/www/apache/
 
 echo "Configuring Apache port..."
-sudo sed -i 's+80+8080+' /etc/apache2/ports.conf
+sudo sed -i 's+.*80.*+<<VirtualHost 127.0.0.1:8080>+' /etc/apache2/ports.conf
 sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/example.conf
 sudo sed 's+Document.*+Document /var/www/apache+' /etc/apache2/sites-available/example.conf
 wait
@@ -49,3 +49,8 @@ ls -al /var/www
 ls -al /etc/apache2/
 echo "Check detail folder..."
 ls -al /etc/apache2/sites-available/
+
+echo "Docker installing..."
+sudo mv /home/ubuntu/docker.sh /home/wahyu
+chmod +x /home/wahyu/docker.sh
+bash /home/wahyu/docker.sh

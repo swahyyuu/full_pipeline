@@ -72,8 +72,13 @@ build {
   ]
 
   provisioner "file" {
-    source = "./bash_script/nginx.conf"
+    source = "./required_scripts/nginx.conf"
     destination = "/home/ubuntu/"
+  }
+
+  provisioner "file" {
+    source = "./required_scripts/docker.sh"
+    destination = "/home/ubuntu"
   }
 
   provisioner "shell" {
