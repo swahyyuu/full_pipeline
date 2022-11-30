@@ -95,19 +95,77 @@ pipeline {
                 }
               }
             }
-            stage('Preparing AMI Packer') {
-              steps {
-                dir('files/packer/') {
-                  script {
-                    modules.slack = load "../slack_notif.groovy"
-                    modules.slack.packerBuild()                    
+            stage('Preparing AMI and Infrastructure') {
+              stages {
+                stage('Preparing AMI Packer') {
+                  steps {
+                    dir('files/packer/') {
+                      script {
+                        modules.slack = load "../slack_notif.groovy"
+                        modules.slack.packerBuild()                    
+                      }
+                      sh """
+                        packer build \
+                        -var "aws_access_key=$ACCESS_KEY" \
+                        -var "aws_secret_key=$SECRET_KEY" \
+                        -var-file="variables.pkrvars.hcl" .
+                      """
+                    }
                   }
-                  sh """
-                    packer build \
-                    -var "aws_access_key=$ACCESS_KEY" \
-                    -var "aws_secret_key=$SECRET_KEY" \
-                    -var-file="variables.pkrvars.hcl" .
-                  """
+                }
+                stage('TerraformInit') {
+                  steps {
+                    dir('files/') {
+                      script {
+                        modules.slack.envProdStart(currentBuild.result)
+                        try {
+                        withAWS(credentials:'AwsAccount') {
+                          sh """
+                            aws configure set region "ap-southeast-1"
+                            chmod +x ./modules/bash_scripts/check_kms.sh
+                            ./modules/bash_scripts/check_kms.sh
+                          """
+                        } 
+                        } catch(err) {
+                          sh "echo something_error"
+                        }
+                      }
+                      sh """
+                      terraform init -upgrade -input=false
+                      whoami
+                      """
+                    }
+                  }
+                }
+                stage('TerraformFormat') {
+                  steps {
+                    dir('files/') {
+                      sh "terraform fmt -list=true -write=false -diff=true -check=true"
+                    }
+                  }
+                }
+                stage('TerraformValidate') {
+                  steps {
+                    dir('files/') {
+                      sh "terraform validate"
+                    }
+                  }
+                }
+                stage('TerraformPlan') {
+                  steps {
+                    dir('files/') {
+                      script {
+                        try {
+                          sh "terraform workspace new ${params.WORKSPACE}"
+                        } catch (err) {
+                          sh "terraform workspace select ${params.WORKSPACE}"
+                        }               
+                        sh "terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
+                        -out terraform.tfplan;echo \$? > status"
+                        stash name: "terraform-plan", includes: "terraform.tfplan"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -117,63 +175,6 @@ pipeline {
     }
     stage('Production Environment') {
       stages {
-        stage('TerraformInit') {
-          steps {
-            dir('files/') {
-              script {
-                modules.slack.envProdStart(currentBuild.result)
-                try {
-                withAWS(credentials:'AwsAccount') {
-                  sh """
-                    aws configure set region "ap-southeast-1"
-                    chmod +x ./modules/bash_scripts/check_kms.sh
-                    ./modules/bash_scripts/check_kms.sh
-                  """
-                } 
-                } catch(err) {
-                  sh "echo something_error"
-                }
-              }
-              sh """
-              terraform init -upgrade -input=false
-              whoami
-              """
-            }
-          }
-        }
-        stage('TerraformFormat') {
-          steps {
-            dir('files/') {
-              sh "terraform fmt -list=true -write=false -diff=true -check=true"
-            }
-          }
-        }
-
-        stage('TerraformValidate') {
-          steps {
-            dir('files/') {
-              sh "terraform validate"
-            }
-          }
-        }
-
-        stage('TerraformPlan') {
-          steps {
-            dir('files/') {
-              script {
-                try {
-                  sh "terraform workspace new ${params.WORKSPACE}"
-                } catch (err) {
-                  sh "terraform workspace select ${params.WORKSPACE}"
-                }               
-                sh "terraform plan -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' \
-                -out terraform.tfplan;echo \$? > status"
-                stash name: "terraform-plan", includes: "terraform.tfplan"
-              }
-            }
-          }
-        }
-
         stage('TerraformApply') {
           steps {
             script {
@@ -191,6 +192,7 @@ pipeline {
                   unstash "terraform-plan"
                   try {
                     sh 'terraform apply terraform.tfplan'
+                    sh 'sleep 5m'
                   } catch (err) {
                     sh "terraform destroy -auto-approve \
                     -var 'access_key=$ACCESS_KEY' \
@@ -201,7 +203,6 @@ pipeline {
             }
           }
         }
-
         stage('TerraformDestroy') {
           steps {
             dir('files/') {

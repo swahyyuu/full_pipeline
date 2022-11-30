@@ -1,6 +1,6 @@
 variable "account_id" {
   description = "Current account ID"
-  type = string
+  type        = string
 }
 
 variable "vpc_id" {
@@ -41,4 +41,10 @@ variable "bash_dir" {
   type        = string
   description = "Path directory of bash scripts"
   default     = "modules/bash_scripts"
+}
+
+variable "dockerhub_user" {
+  type        = string
+  description = "Username of Docker Hub"
+  default     = "conan736"
 }

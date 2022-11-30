@@ -124,4 +124,18 @@ resource "aws_instance" "pub_instance" {
       timeout     = "10m"
     }
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "docker run -d -p 5002:80 --name flask_from_jenkins ${var.dockerhub_user}/jenkins:3.1"
+    ]
+
+    connection {
+      host        = self.public_ip
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("${var.key_name}.pem")
+      timeout     = "2m"      
+    }
+  }
 }
