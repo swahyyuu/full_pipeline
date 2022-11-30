@@ -35,7 +35,7 @@ sudo mkdir /var/www/apache
 sudo cp /var/www/html/index.html /var/www/apache/
 
 echo "Configuring Apache port..."
-sudo sed -i 's+*:80+localhost:8080+' /etc/apache2/ports.conf
+sudo sed -i 's+80+8080+' /etc/apache2/ports.conf
 sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/example.conf
 sudo sed 's+Document.*+Document /var/www/apache+' /etc/apache2/sites-available/example.conf
 wait
