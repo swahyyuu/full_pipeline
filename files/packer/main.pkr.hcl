@@ -78,7 +78,7 @@ build {
 
   provisioner "file" {
     source = "./required_scripts/docker.sh"
-    destination = "/home/ubuntu"
+    destination = "/home/ubuntu/"
   }
 
   provisioner "shell" {
