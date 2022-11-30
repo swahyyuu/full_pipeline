@@ -23,7 +23,7 @@ echo "Nginx shutting down..."
 sudo systemctl stop nginx
 echo "Apache shutting down..."
 sudo systemctl disable apache2
-
+sleep 2
 
 echo "Activate Apache..."
 sudo systemctl enable apache2

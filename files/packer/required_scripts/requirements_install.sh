@@ -11,10 +11,11 @@ sudo mkdir /home/wahyu
 sudo mv /home/ubuntu/nginx.conf /home/wahyu
 sudo cp /home/wahyu/nginx.conf /etc/nginx/sites-available/example
 sudo mkdir /var/www/nginx
-
+wait
 
 sudo ln -s /etc/nginx/sites-available/example /etc/nginx/sites-enabled/example
 sudo rm /etc/nginx/sites-enabled/default
+wait
 
 sudo cp /var/www/html/index* /var/www/nginx/index.html
 
@@ -22,17 +23,17 @@ echo "Check file for nginx configuration..."
 ls -al /var/www/nginx
 cat /var/www/nginx/index.html
 cat /etc/nginx/sites-available/example
-
+wait
 
 echo "Installing apache..."
 sudo apt-get install apache2 -y
-wait
 sudo apt-get -f install
 wait
 
 echo "Create apache folder"
 sudo mkdir /var/www/apache
 sudo cp /var/www/html/index.html /var/www/apache/
+wait
 
 echo "Configuring Apache port..."
 sudo sed -i 's+.*80.*+<<VirtualHost 127.0.0.1:8080>+' /etc/apache2/ports.conf

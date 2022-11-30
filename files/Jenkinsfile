@@ -36,7 +36,7 @@ pipeline {
       stages {
         stage('Preparing Build') {
           parallel {
-            stage('Test Application') {
+            stage('Application Test Locally') {
               stages {
                 stage('Docker Build') {
                   steps {
@@ -87,13 +87,15 @@ pipeline {
                   steps {
                     dir('files/') {
                       sh "sleep 5"
+                      sh "echo curling the web server"
+                      sh "curl localhost"
                       sh "docker rm -f flask_from_jenkins"
                     }
                   }
                 }
               }
             }
-            stage('Packer Build') {
+            stage('Preparing AMI Packer') {
               steps {
                 dir('files/packer/') {
                   sh """
